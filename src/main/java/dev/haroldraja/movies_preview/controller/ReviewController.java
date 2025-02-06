@@ -1,5 +1,6 @@
 package dev.haroldraja.movies_preview.controller;
 
+import dev.haroldraja.movies_preview.model.ReviewCreationDTO;
 import dev.haroldraja.movies_preview.model.ReviewDTO;
 import dev.haroldraja.movies_preview.service.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ReviewController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ReviewDTO> createReview(@RequestBody Map<String, String> payload){
-        return new ResponseEntity<>(reviewService.createReview(payload.get("reviewBody"), payload.get("imdbId")), HttpStatus.CREATED);
+    public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewCreationDTO payload){
+        return new ResponseEntity<>(reviewService.createReview(payload), HttpStatus.CREATED);
     }
 }

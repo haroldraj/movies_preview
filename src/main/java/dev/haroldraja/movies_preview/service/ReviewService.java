@@ -2,6 +2,7 @@ package dev.haroldraja.movies_preview.service;
 
 import dev.haroldraja.movies_preview.entity.Movie;
 import dev.haroldraja.movies_preview.entity.Review;
+import dev.haroldraja.movies_preview.model.ReviewCreationDTO;
 import dev.haroldraja.movies_preview.model.ReviewDTO;
 import dev.haroldraja.movies_preview.repository.ReviewRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,14 +22,14 @@ public class ReviewService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public ReviewDTO createReview(String reviewBody, String imdbID){
+    public ReviewDTO createReview(ReviewCreationDTO reviewCreationDTO){
         Review newReview = new Review();
-        newReview.setBody(reviewBody);
-        if(movieService.existsByImdbId(imdbID)){
+        newReview.setBody(reviewCreationDTO.reviewBody());
+        if(movieService.existsByImdbId(reviewCreationDTO.imdbId())){
             Review savedReview = reviewRepository.save(newReview);
             //movieService.addReviewToMovie(imdbID, savedReview.getId());
             mongoTemplate.update(Movie.class)
-                    .matching(Criteria.where("imdbId").is(imdbID))
+                    .matching(Criteria.where("imdbId").is(reviewCreationDTO.imdbId()))
                     .apply(new Update().push("reviewIds").value(savedReview.getId()))
                     .first()
             ;
