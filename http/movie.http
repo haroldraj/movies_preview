@@ -1,0 +1,5 @@
+### GET request to example server
+GET http://localhost:8080/api/v1/movies
+
+###
+GET http://localhost:8080/api/v1/movies/tt10298840
